@@ -1,6 +1,5 @@
 function [sequence] = minPhaseInterp(startImage,endImage,interpVals)
 
-% TODO: TEst
 %function [sequence] = minPhaseInterp(startImage,endImage,interpVals)
 %
 %This function creates a morph between startImage and endImage.
