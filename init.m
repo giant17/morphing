@@ -4,7 +4,7 @@
 
 %% Define constants
 
-%TODO: pathFrom =
+%TODO: define paths from.tp
 %TODO: pathTo =
 pathShine = '~/.local/share/toolbox/shine';
 
