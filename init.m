@@ -39,6 +39,8 @@ end
 % 60/1.5 = 40
 
 % TODO: refreshRate = Screen('FrameRate', screenNumber)
+% TODO: Morphing from 0 or 30?
+% @todo: Morphing from 0 or 30?
 
 % Return list ids/emos
 
