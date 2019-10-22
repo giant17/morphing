@@ -1,4 +1,6 @@
 function [sequence] = minPhaseInterp(startImage,endImage,interpVals)
+
+% TODO: TEst
 %function [sequence] = minPhaseInterp(startImage,endImage,interpVals)
 %
 %This function creates a morph between startImage and endImage.
@@ -19,7 +21,7 @@ function [sequence] = minPhaseInterp(startImage,endImage,interpVals)
 %endImage phase.  .5 is halfway between both phases.
 %
 %For more details see:
-%An objective method for measuring face detection thresholds using the 
+%An objective method for measuring face detection thresholds using the
 %sweep steady-state visual evoked response.
 %Ales, JM*, Farzin F*, Rossion B, Norcia AM
 %(2012) Journal of Vision 12(10):18, 1?18
@@ -43,12 +45,12 @@ function [sequence] = minPhaseInterp(startImage,endImage,interpVals)
 % it under the terms of the GNU General Public License as published by
 % the Free Software Foundation, either version 3 of the License, or
 % (at your option) any later version.
-% 
+%
 % This program is distributed in the hope that it will be useful,
 % but WITHOUT ANY WARRANTY; without even the implied warranty of
 % MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 % GNU General Public License for more details.
-% 
+%
 % You should have received a copy of the GNU General Public License
 % along with this program.  If not, see <http://www.gnu.org/licenses/>.%
 
