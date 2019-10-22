@@ -1,16 +1,34 @@
-% Face Morphing
+%% Face Morphing
 
-% TODO: Document stuff
+% This code generate a sequence of images morphing between each other
+% Here are the steps
+	% 1. SHINE images: control for low level features, such as luminosity
+	% 2. Create a sequence, changing emotion and identity at specific frequenciees
+	% 3. Add watermark to images: add point when image change
+	% 4. Return a video of the sequence
 
 %% Define constants
 
-%TODO: define paths from.tp
-%TODO: pathTo =
+% Directory containing images to shine
+pathFrom = '~/.local/share/gdrive/Code/MA_Gianluca/Data/faceeemo/original';
+
+% Directory in which to save shined images
+pathTo = '~/.local/share/gdrive/Code/MA_Gianluca/Data/faceeemo/shined';
+
+% Path to Shine toolbox on local computer
 pathShine = '~/.local/share/toolbox/shine';
 
-%% Shine images
+% Determine wether to Shine or not
+toShine = false
 
-shineImages(pathFrom, pathTo, pathShine);
+%% Shine
+
+% Shine images is toShine is true
+if toShine
+	shineImages(pathFrom, pathTo, pathShine);
+end
+
+
 
 %% Create sequence
 
