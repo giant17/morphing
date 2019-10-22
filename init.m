@@ -29,8 +29,16 @@ if toShine
 end
 
 
-
 %% Create sequence
+
+% TODO: Morphing always, more linspace size if more difference between 30/40
+% TODO: How to convert frequencies in Herx lapptop
+
+% In order to find how many frames for each change: RefreshRate/Frequency
+% As an example, if refreshRate is 60 and frequency 1.5, the number of frames between cycle will be:
+% 60/1.5 = 40
+
+% TODO: refreshRate = Screen('FrameRate', screenNumber)
 
 % Return list ids/emos
 
