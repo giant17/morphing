@@ -1,5 +1,5 @@
 
-p = '~/Data/faceemo';
+p = '~/.local/share/gdrive/MA_Gianluca/Data/faceemo/shined';
 ims = dir(p);
 ims = {ims(3:end).name};
 
@@ -17,7 +17,9 @@ for iimg=1:length(ims)
     end
 end
 
-frames = 1080;
+% TODO: Cue selection
+
+frames = 320;
 seq = cell(5,frames);
 id = ids{randi(length(ids))};
 emo = emos{randi(length(emos))};
@@ -62,17 +64,18 @@ for iseq=1:length(seq)
 end
 
 
-seq{1,120}
-seq{2,120}
+% seq{1,120}
+% seq{2,120}
 
-seq{1,119}
-seq{2,119}
+% seq{1,119}
+% seq{2,119}
 % Create morphs
+
+% TODO: Start from first frame to change
 
 i=1;
 images=[];
 img = imread(seq{3,i});
-size(morph)
 while size(img,3) < frames
 	if i > frames
 		break
@@ -116,7 +119,10 @@ screenSize = get(screenNumber, 'ScreenSize');
 winX = screenSize(3);
 winY = screenSize(4);
 k = 1;
+
 win = Screen('OpenWindow', screenNumber, gray, [0 0 winX winY]);
+
+mov = Screen('CreateMovie',win, 'seq.mov');
 
 for iimg=1:size(images,3)
 	imageTexture = Screen('MakeTexture', win, images(:,:,iimg));
@@ -152,12 +158,21 @@ for iimg=1:size(images,3)
 
 
 	% img = Screen('GetImage',win);
-	% imgName = ['~/image' num2str(iimg) '.png'];
+	% imgName = ['~/dl/image/' num2str(iimg) '.png'];
 	% imwrite(img, imgName);
 
 
+	% TODO: Remove flickering screen
+	% TODO: POsition squares without Psychtoolbox
+	% Screen('AddFrameToMovie',win);
+	% TODO: Flip feed time variable each time for high precision time stamp
+	% TODO: Writing frame imwrite
 
+
+	% TODO: image creation vs image presentation: segment
 	Screen('Flip',win);
 end
-KbCheck;
+
+Screen('FinalizeMovie',mov);
+Screen('CloseAll');
 sca;
