@@ -1,26 +1,11 @@
+function [sequence] = sequence(pathImg, ids, emos, chosenDims, seqType)
+	% Return a list of images names, oscillating with 2 and 1.5 Hertz
 
-p = '~/.local/share/gdrive/MA_Gianluca/Data/faceemo/shined';
-ims = dir(p);
-ims = {ims(3:end).name};
 
-ids = {};
-emos = {};
 
-for iimg=1:length(ims)
-    a = regexp(ims{iimg}, '_', 'split');
 
-    if ~ismember(a{1}, ids)
-        ids{end+1} = a{1};
-    end
-    if ~ismember(a{2}, emos)
-        emos{end+1} = a{2};
-    end
-end
-
-% TODO: Cue selection
-
-frames = 320;
-seq = cell(5,frames);
+framesNumber = 320;
+seq = cell(5,framesNumber);
 id = ids{randi(length(ids))};
 emo = emos{randi(length(emos))};
 idChange = 0;
@@ -59,7 +44,7 @@ for iseq=1:length(seq)
 	seq{5,iseq} = emoChange;
 
 	% Add image
-	imgName = [p '/' id '_' emo '_039.bmp'];
+	imgName = [pathImg '/' id '_' emo '_039.bmp'];
 	seq{3,iseq} = imgName;
 end
 
@@ -85,6 +70,9 @@ while size(img,3) < frames
 
 		% get morph
 		imgNew = imread(seq{3,i});
+		% TODO: Threshold - Dynamic: diminish than x
+		% t = 140;
+		% imgNew(imgNew > t) = t;
 		morph = minPhaseInterp(img, imgNew, linspace(0.3,.7,9));
 		images = cat(3,images,morph);
 		i = i+9;
@@ -98,7 +86,7 @@ end
 % Remove last images
 images = images(:,:,1:end-9);
 
-%% display
+% %% display
 
 % size(images)
 
@@ -120,6 +108,7 @@ winX = screenSize(3);
 winY = screenSize(4);
 k = 1;
 
+Screen('Preference', 'SkipSyncTests',2)
 win = Screen('OpenWindow', screenNumber, gray, [0 0 winX winY]);
 
 mov = Screen('CreateMovie',win, 'seq.mov');
@@ -176,3 +165,9 @@ end
 Screen('FinalizeMovie',mov);
 Screen('CloseAll');
 sca;
+
+% testImg = images(:,:,40);
+% a = 160
+% testImg(testImg > a) = a;
+% imshow(testImg)
+% imshow(images(:,:,40))
