@@ -46,6 +46,8 @@ seqTypes = {'valid', 'invalid', 'neutral'};
 % Create the basic sequence
 sequence = getSequence(pathTo, ids, emos);
 
+% Get random code
+randCode = num2str(randi(10000));
 
 % ID - Loop over types
 for iType=1:length(seqTypes)
@@ -60,7 +62,7 @@ for iType=1:length(seqTypes)
 		sequence{1,randIdx} = chosenId;
 
 		% Create path sequence
-		pathSeq = [pathSeqs '/' num2str(randi(10000)) '-ID-' chosenId '_valid']
+		pathSeq = [pathSeqs '/' randCode '-ID-' chosenId '_valid']
 
 		% Write images
 		writeImages(pathTo, pathSeq, sequence, randIdx);
@@ -75,7 +77,7 @@ for iType=1:length(seqTypes)
 		sequence{2,randIdx} = chosenEmo;
 
 		% Create path sequence
-		pathSeq = [pathSeqs '/' num2str(randi(10000)) '-ID-' chosenId '_invalid']
+		pathSeq = [pathSeqs '/' randCode '-ID-' chosenId '_invalid']
 
 		% Write images
 		writeImages(pathTo, pathSeq, sequence, randIdx);
@@ -84,7 +86,7 @@ for iType=1:length(seqTypes)
 		randIdx = 0;
 
 		% Create path sequence
-		pathSeq = [pathSeqs '/' num2str(randi(10000)) '-ID-' chosenId '_neutral']
+		pathSeq = [pathSeqs '/' randCode '-ID-' chosenId '_neutral']
 
 		% Write images
 		writeImages(pathTo, pathSeq, sequence, randIdx);
@@ -105,7 +107,7 @@ for iType=1:length(seqTypes)
 		sequence{2,randIdx} = chosenEmo;
 
 		% Create path sequence
-		pathSeq = [pathSeqs '/' num2str(randi(10000)) '-EMO-' chosenEmo '_valid']
+		pathSeq = [pathSeqs '/' randCode '-EMO-' chosenEmo '_valid']
 
 		% Write images
 		writeImages(pathTo, pathSeq, sequence, randIdx);
@@ -120,7 +122,7 @@ for iType=1:length(seqTypes)
 		sequence{1,randIdx} = chosenId;
 
 		% Create path sequence
-		pathSeq = [pathSeqs '/' num2str(randi(10000)) '-EMO-' chosenEmo '_invalid']
+		pathSeq = [pathSeqs '/' randCode '-EMO-' chosenEmo '_invalid']
 
 		% Write images
 		writeImages(pathTo, pathSeq, sequence, randIdx);
@@ -129,7 +131,7 @@ for iType=1:length(seqTypes)
 		randIdx = 0;
 
 		% Create path sequence
-		pathSeq = [pathSeqs '/' num2str(randi(10000)) '-EMO-' chosenEmo '_neutral']
+		pathSeq = [pathSeqs '/' randCode '-EMO-' chosenEmo '_neutral']
 
 		% Write images
 		writeImages(pathTo, pathSeq, sequence, randIdx);
@@ -140,8 +142,7 @@ end
 
 
 
-
-
+save
 
 % TODO: Make sequence
 % TODO: Import and Morph images
