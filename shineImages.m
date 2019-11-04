@@ -12,34 +12,81 @@ function [] = shineImages(pathFrom, pathTo, pathShine)
 
 
 	% Create destination path if not exists
-	if ~exist(pathTo, 'folder')
+	% if ~exist(pathTo, 'folder')
 		mkdir(pathTo)
-	end
+	% end
 
 	% List all sub-folders
-	folders = dir(pathFrom);
-	folders = {folders(3:end).name};
+	% folders = dir(pathFrom)
+	% folders = {folders(3:end).name}
 
 	% Initialize images and names for
-	names = {};
 	images = {};
+	t = 140;
+	% t = 255/2;
 
-	% Loop over ids
-	for ifolder=1:length(folders)
-		ims = dir([pathFrom '/' folders{ifolder} '/*039.bmp']);
-		ims = {ims.name};
+	% % Loop over ids
+	% for ifolder=1:length(folders)
+	% 	ims = dir([pathFrom '/' folders{ifolder} '/*039.bmp'])
+	% 	ims = {ims.name};
+
+	% 	% Check if id has enough emotions
+	% 	if length(ims) == 8
+	% 		for iimg=1:8
+
+	% 			% Save image as gray and name
+	% 			name = [pathFrom '/' folders{ifolder} '/' ims{iimg}];
+	% 			names{end+1} = name;
+
+	% 			img = rgb2gray(imread(name));
+	% 			imgDelta = img(img > t) - t;
+	% 			img(img > t) = mean(img(img > 29)) + imgDelta;
+	% 			images{end+1} = img;
+
+
+	% 		end
+	% 	end
+	% end
+
+imageNames = dir(pathFrom);
+names = {imageNames(3:end).name};
+whiteEmo = {'01', '02', '03', '06', '07'};
+
+for iimg=1:length(names)
+	imageName = [pathFrom '/' names{iimg}];
+	img = rgb2gray(imread(imageName));
+	a = regexp(names{iimg}, '_', 'split');
+	if ismember(a{2}, whiteEmo)
+		% img(img > t) = mean(img(img > 29)) + (abs(img(img > t)) - t);
+		% tr = mean(img(img > t)) - mean(img(img > 29));
+		% img(img > t) = img(img > t) - mean(img(img > 29));
+
+% 		img(img > t) = img(img > t) - tr;
+
+		% halfA = img(1:250,1:end);
+		% halfB = img(251:end,1:end);
+
+		% meanAll = mean(img,'all');
+		% d = halfB(halfB > t) - t;
+
+		% halfB(halfB > t) = meanAll + d - 10;
+		% img = cat(1,halfA,halfB);
+		d = img(img > t) - t;
+		img(img > t) = mean(img(img > 29)) + d;
+
+
+	end
+	images{end+1} = img;
+end
+
 
 		% Check if id has enough emotions
-		if length(ims) == 8
-			for iimg=1:8
+		% if length(ims) == 8
+		% 	for iimg=1:8
 
 				% Save image as gray and name
-				name = [pathFrom '/' folders{ifolder} '/' ims{iimg}];
-				names{end+1} = name;
-				images{end+1} = rgb2gray(imread(name));
-			end
-		end
-	end
+				% name = [pathFrom '/' folders{ifolder} '/' ims{iimg}];
+				% names{end+1} = name;
 
 	% Initialize shined
 	shined = cell(1,ceil(length(images)/100));
@@ -52,7 +99,7 @@ function [] = shineImages(pathFrom, pathTo, pathShine)
 			images(1:100) = [];
 			k = k+1;
 			disp(repmat('-',1,50))
-			disp(['Batch shining complete: ' num2str(k) '/' num2str(ceil(imagesNum/100))])
+			disp(['Batch shining complete: ' num2str(k) '/' num2str(ceil(length(images)/100))])
 			disp(repmat('-',1,50))
 		else
 			shined{k} = SHINE(images);
