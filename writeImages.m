@@ -3,7 +3,7 @@ function [] = writeImages(pathImg, pathSeq, sequence, randIdx)
 
 	% imgName = [pathImg '/' id '_' emo '_039.bmp'];
 	% seq{3,iseq} = imgName;
-
+	degradation=.95;
 	i=1;
 	images=[];
 	img = imread([pathImg '/' sequence{1,i} '_' sequence{2,i} '_039.bmp']);
@@ -60,13 +60,15 @@ function [] = writeImages(pathImg, pathSeq, sequence, randIdx)
 			img(1:10,1:10) = 255;
 		end
 
+		% Sadr degradation
+		img = sadr(img, degradation);
 		% Write image
 		imgName = [pathSeq '/' num2str(iimg) '.png'];
-		imwrite(img,imgName);
+		imwrite(uint8(img),imgName);
 
 	end
 
 		% Save variables
-		matName = [pathSeq '/' x{end} '.mat'];
-		save(matName)
+		% matName = [pathSeq '/' 'seq.mat'];
+		% save(matName)
 end

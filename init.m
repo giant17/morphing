@@ -9,6 +9,8 @@
 
 %% Define constants
 
+clear
+clearvars
 % Directory containing images to shine
 pathFrom = '~/.local/share/gdrive/MA_Gianluca/Data/faceemo/Facegen_output_ori039';
 
@@ -23,7 +25,7 @@ pathShine = '~/repos/forks/shine';
 pathSeqs = '~/.local/share/gdrive/MA_Gianluca/Data/sequences';
 
 % Determine wether to Shine or not
-toShine = true;
+toShine = false;
 
 %% Shine
 
@@ -38,61 +40,65 @@ if toShine
 end
 
 
-%%
+%% Get Dimensions
 
 % Get ids and emos
 [ids emos chosenId chosenEmo] = getDims(pathTo);
+emos(5) = [];
+emos(5) = [];
+emos
+%% Create Sequence
 
-
-seqTypes = {'valid', 'invalid', 'neutral'};
+seqTypes = {'21', '22', '23'};
 % chosenDims = {'id', 'emo'};
 % Loop over emo and id
 
-
 % Create the basic sequence
 sequence = getSequence(pathTo, ids, emos);
-
 % Get random code
-randCode = num2str(randi(10000));
+% randCode = num2str(randi(10000));
+randCode = num2str(length(dir(pathSeqs)));
 
-% ID - Loop over types
+% 11 - Loop over types
 for iType=1:length(seqTypes)
 	seqType = seqTypes{iType}
 
-	if strcmp(seqType, 'valid')
+	if strcmp(seqType, '21')
 		randIdx = randi([60 260]);
 		while mod(randIdx,40)
 			randIdx = randi([60 260]);
 		end
 
+		sequence = getSequence(pathTo, ids, emos);
 		sequence{1,randIdx} = chosenId;
 
 		% Create path sequence
-		pathSeq = [pathSeqs '/' randCode '-ID-' chosenId '_valid-' num2str(randIdx)]
+		pathSeq = [pathSeqs '/' randCode '-11' '_21-' num2str(randIdx)]
 
 		% Write images
 		writeImages(pathTo, pathSeq, sequence, randIdx);
 
-
-	elseif strcmp(seqType, 'invalid')
+	elseif strcmp(seqType, '22')
 		randIdx = randi([60 260]);
 		while mod(randIdx,30)
 			randIdx = randi([60 260]);
 		end
 
+		sequence = getSequence(pathTo, ids, emos);
 		sequence{2,randIdx} = chosenEmo;
 
 		% Create path sequence
-		pathSeq = [pathSeqs '/' randCode '-ID-' chosenId '_invalid-' num2str(randIdx)]
+		pathSeq = [pathSeqs '/' randCode '-11' '_22-' num2str(randIdx)]
 
 		% Write images
 		writeImages(pathTo, pathSeq, sequence, randIdx);
 
-	elseif strcmp(seqType, 'neutral')
+	elseif strcmp(seqType, '23')
 		randIdx = 0;
+		sequence = getSequence(pathTo, ids, emos);
 
 		% Create path sequence
-		pathSeq = [pathSeqs '/' randCode '-ID-' chosenId '_neutral']
+		pathSeq = [pathSeqs '/' randCode '-11' '_23']
 
 		% Write images
 		writeImages(pathTo, pathSeq, sequence, randIdx);
@@ -100,44 +106,47 @@ for iType=1:length(seqTypes)
 end
 
 
-% EMO - Loop over types
+% 10 - Loop over types
 for iType=1:length(seqTypes)
 	seqType = seqTypes{iType}
 
-	if strcmp(seqType, 'valid')
+	if strcmp(seqType, '21')
 		randIdx = randi([60 260]);
 		while mod(randIdx,30)
 			randIdx = randi([60 260]);
 		end
 
+		sequence = getSequence(pathTo, ids, emos);
 		sequence{2,randIdx} = chosenEmo;
 
 		% Create path sequence
-		pathSeq = [pathSeqs '/' randCode '-EMO-' chosenEmo '_valid-' num2str(randIdx)]
+		pathSeq = [pathSeqs '/' randCode '-10' '_21-' num2str(randIdx)]
 
 		% Write images
 		writeImages(pathTo, pathSeq, sequence, randIdx);
 
 
-	elseif strcmp(seqType, 'invalid')
+	elseif strcmp(seqType, '22')
 		randIdx = randi([60 260]);
 		while mod(randIdx,40)
 			randIdx = randi([60 260]);
 		end
 
+		sequence = getSequence(pathTo, ids, emos);
 		sequence{1,randIdx} = chosenId;
 
 		% Create path sequence
-		pathSeq = [pathSeqs '/' randCode '-EMO-' chosenEmo '_invalid-' num2str(randIdx)]
+		pathSeq = [pathSeqs '/' randCode '-10' '_22-' num2str(randIdx)]
 
 		% Write images
 		writeImages(pathTo, pathSeq, sequence, randIdx);
 
-	elseif strcmp(seqType, 'neutral')
+	elseif strcmp(seqType, '23')
 		randIdx = 0;
+		sequence = getSequence(pathTo, ids, emos);
 
 		% Create path sequence
-		pathSeq = [pathSeqs '/' randCode '-EMO-' chosenEmo '_neutral']
+		pathSeq = [pathSeqs '/' randCode '-10' '_23']
 
 		% Write images
 		writeImages(pathTo, pathSeq, sequence, randIdx);

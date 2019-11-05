@@ -56,7 +56,7 @@ for iimg=1:length(names)
 	imageName = [pathFrom '/' names{iimg}];
 	img = rgb2gray(imread(imageName));
 	a = regexp(names{iimg}, '_', 'split');
-	if ismember(a{2}, whiteEmo)
+	% if ismember(a{2}, whiteEmo)
 		% img(img > t) = mean(img(img > 29)) + (abs(img(img > t)) - t);
 		% tr = mean(img(img > t)) - mean(img(img > 29));
 		% img(img > t) = img(img > t) - mean(img(img > 29));
@@ -71,11 +71,11 @@ for iimg=1:length(names)
 
 		% halfB(halfB > t) = meanAll + d - 10;
 		% img = cat(1,halfA,halfB);
-		d = img(img > t) - t;
-		img(img > t) = mean(img(img > 29)) + d;
+		% d = img(img > t) - t;
+		% img(img > t) = mean(img(img > 29)) + d;
 
 
-	end
+	% end
 	images{end+1} = img;
 end
 

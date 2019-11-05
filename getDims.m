@@ -1,8 +1,10 @@
-function [ids, emos, chosenId, chosenEmo] = getDims(pathImg)
+function [ids, emos,chosenId,chosenEmo] = getDims(pathImg)
 	% Get the id and emotion from each image file name
 	% f<ID>_<EMO>_039.bmp
 	% INPUT: path of images
 
+	chosenIdIdx = 12;
+	chosenEmoIdx = 7;
 	ims = dir(pathImg);
 	ims = {ims(3:end).name};
 
@@ -22,13 +24,10 @@ function [ids, emos, chosenId, chosenEmo] = getDims(pathImg)
 
 	% Get random chosen emo/id
 
-	chosenIdIdx = randi(length(ids));
-	chosenEmoIdx = randi(length(emos));
 	chosenId = ids{chosenIdIdx};
 	chosenEmo = emos{chosenEmoIdx};
 
 	% Remove chosen ones
 	emos(chosenEmoIdx) = [];
 	ids(chosenIdIdx) = [];
-
 end
