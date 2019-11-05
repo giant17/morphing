@@ -18,9 +18,11 @@ function [trials] = createMatrix(pathSeqs, numTrials)
 
 	% Row 3 - Path Sequence
 
+	trials(:,3) = {''};
+
 	for i=1:numTrials
 		x = dir([pathSeqs '/*-' trials{i,1} '_' trials{i,2} '*']);
-		x = {x.name}
+		x = {x.name};
 		seqs = {};
 		for iseq=1:length(x)
 			seqs{end+1} = [pathSeqs '/' x{iseq}];
@@ -28,8 +30,10 @@ function [trials] = createMatrix(pathSeqs, numTrials)
 
 		chosenSeq = seqs{randi(length(seqs))};
 
+
 		while true
-			if ismember(chosenSeq, trials{:,3})
+			% TODO: Change ismember
+			if ismember(chosenSeq, trials(:,3))
 				chosenSeq = seqs{randi(length(seqs))};
 			else
 				break
@@ -39,4 +43,6 @@ function [trials] = createMatrix(pathSeqs, numTrials)
 		trials(i,3) = {chosenSeq};
 	end
 
+	% Shuffle trials
+	trials = Shuffle(trials);
 end
