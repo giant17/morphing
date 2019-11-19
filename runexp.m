@@ -1,23 +1,30 @@
 % function [] = init(isMeg,subject,numBlock)
 
 times = [];
-addpath(genpath('/usr/share/matlab/site/m'))
+% addpath(genpath('/usr/share/matlab/site/m'))
 %%pathSeqs ='~/.local/share/gdrive/MA_Gianluca/Data/faceemo/sequences';
 
+subject = 'gt';
+block = 1;
 numTrials = 100;
 isMeg = false;
 
 if ispc
-    pathSeqs = ''
+    pathSeqs = '';
+    pathData = '';
 else
  pathSeqs = '~/Datasets/MasterThesis/Faces/Sequences';
+ pathData = '~/Datasets/MasterThesis/Faces/Results';
 end
+
+mkdir(pathData)
  
 %% Create Matrix
 
 trials = createMatrix(pathSeqs, numTrials);
 
 %% Start Psychtoolbox
+numTrials = 1;
 
 % Display trial
 
@@ -30,7 +37,7 @@ screenSize = get(screenNumber, 'ScreenSize');
 winX = screenSize(3);
 winY = screenSize(4);
 k = 1;
-crossSize = 12;
+crossSize = 10;
 winCenter = [winX/2 winY/2];
 
 win = Screen('OpenWindow', screenNumber, gray, [0 0 winX winY]);
@@ -39,7 +46,6 @@ seq = cell(320,1);
 
 % for i=1:length(trials)
 % for i=1:length(trials)
-numTrials = 10;
 for i=1:numTrials
 
 	% Load image
@@ -52,7 +58,7 @@ for i=1:numTrials
 		seq{iimg} = img;
 	end
 
-	Screen('DrawLines', win, [-crossSize crossSize 0 0; 0 0 -crossSize crossSize], 1, black, winCenter);
+	Screen('DrawLines', win, [-crossSize crossSize 0 0; 0 0 -crossSize crossSize], 2, black, winCenter);
 	Screen('Flip',win);
 	intervalCross = 1;
 	intervalCross = intervalCross + randi([0 100])/1000;
@@ -60,7 +66,7 @@ for i=1:numTrials
 
 	WaitSecs(intervalCross);
 
-	% Screen('TextSize',win,40);
+	% Screen('TextSize',win,10);
 	% Screen('DrawLines', win, [-crossSize crossSize 0 0; 0 0 -crossSize crossSize], 2, black, winCenter);
 	% typeStim = '';
 	% if strcmp(trials{i,1},'10')
@@ -99,7 +105,13 @@ for i=1:numTrials
       % TODO: If press without target -> fill 9999
       imageTexture = Screen('MakeTexture', win, seq{iimg});
       Screen('DrawTexture', win, imageTexture, [], [], 0);
-      DrawFormattedText(win, typeStim,'center','center');
+      
+      if strcmp(trials{i,2},'23')
+          Screen('DrawLines', win, [-crossSize crossSize 0 0; 0 0 -crossSize crossSize], 2, black, winCenter);
+      else
+          DrawFormattedText(win, typeStim,'center','center');
+      end
+      
       x = GetSecs;
       Screen('Flip',win);
       y = GetSecs;
@@ -117,23 +129,20 @@ for i=1:numTrials
   KbQueueRelease;
 
   if pressed
-      if strcmp(trials{i,4}, 'NONE')
-          trials{i,5} = '888';
-      else
-          firstPress(find(firstPress==0))=NaN;
-          [endtime Index]=min(firstPress);
-          % firstPress = firstPress(firstPress > 0);
-          % firstPress = firstPress(1);
-          timePress = endtime - starttime;
-          deltaPress = timePress - targetTime;
-          
-          trials{i,5} = num2str(deltaPress);
-      end
+      % if strcmp(trials{i,4}, 'NONE')
+      %     trials{i,5} = '888';
+      % else
+      firstPress(find(firstPress==0))=NaN;
+      [endtime Index]=min(firstPress);
+      % firstPress = firstPress(firstPress > 0);
+      % firstPress = firstPress(1);
+      timePress = endtime - starttime;
+      deltaPress = timePress - targetTime;
       
+      trials{i,5} = num2str(deltaPress);
   end
-  
-  
-  disp(trials{i,5}) 
+      
+  % disp(trials{i,5}) 
   
   % reactionTime = num2str(pressTime - targetTime);
   % trials(:,5) = {reactionTime};
@@ -143,8 +152,10 @@ for i=1:numTrials
 	% intervalCross = intervalCross + randi([0 100])/1000;
 	% WaitSecs(intervalCross);
 
-	Screen('DrawLines', win, [-crossSize crossSize 0 0; 0 0 -crossSize crossSize], 1, black, winCenter);
-	Screen('Flip',win);
+	% Screen('DrawLines', win, [-crossSize crossSize 0 0; 0 0 -crossSize crossSize], 1, black, winCenter);
+	% Screen('Flip',win);
+  % Screen('Close',win)
+  Screen('Flip',win) 
 
 	intervalCross = .5;
 	intervalCross = intervalCross + randi([0 100])/1000;
@@ -167,7 +178,8 @@ end
   % textAverage = ['The Average reaction time is: ' averageReaction];
   DrawFormattedText(win, textAccuracy,'center','center');
 	Screen('Flip',win);
-  WaitSecs(3)
+  % save([pathData '/' subject '_' num2str(block) '.mat'], trials)
+  WaitSecs(2)
 sca
 
 

@@ -53,5 +53,5 @@ function [trials] = createMatrix(pathSeqs, numTrials)
   trials(:,5) = {'999'};
 
 	% Shuffle trials
-	% trials = Shuffle(trials);
+	trials = Shuffle(trials);
 end
