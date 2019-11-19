@@ -1,0 +1,325 @@
+#+TITLE: Morphing experiment
+
+https://www.quora.com/How-do-I-increase-the-screen-size-of-an-OS-running-on-VirtualBox
+
+Here I will document every chunk of code of my project.
+
+First, major outline of the steps
+
+This project consist in a ssVEP, steady state visual evoked potential study with
+MEG, with faces as a main stimulus
+
+ciao
+
+
+* Stimulus
+** Filter images
+The images are given by The software *FaceGen*: which takes a photograph
+of a person and apply linear transformations in order to apply different
+kind of emotions.
+
+Here is an example
+[file:resources/orig_pic.png]
+
+However, first we need to equalize the images: we need to control for low level features,
+such as luminosity.
+This is given by the MATLAB toolbox *shine*.
+
+*** Init
+First, we declare all the function in the beginning of the file.
+This is useful to create a structure to the code.
+
+Here are the steps/functions:
+- *getImagesName*: load the names of the images in one folder
+- *removeWhite*: remove the pixel too white
+- *shineImages*: apply shined to all the image
+- *writeImages*: write the new images in another folder
+
+#+begin_src matlab :tangle ./editImages.m
+  pathFrom = '~/Datasets/MasterThesis/Faces/Original';
+  pathTo = '~/Datasets/MasterThesis/Faces/ShinedTest';
+  mkdir(pathTo);
+  pathShine = '~/Projects/Matlab/shine';
+  addpath(pathShine);
+
+  t = 145;
+  degradation = 0.95;
+
+  imagesName = getImagesName(pathFrom);
+  images = cell(size(imagesName,2),1);
+
+  for iimg=1:length(imagesName)
+      imageName = imagesName{iimg};
+      img = removeWhite(pathFrom, t, imageName);
+      images{iimg} = img;
+  end
+
+  shined = shineImages(images);
+  writeImages(pathTo, shined, imagesName,degradation);
+#+end_src
+
+*** getImagesName
+The most easy one: return a list of cells with all filenames inside.
+remove the first 2, as in Unix systems are . and ..
+#+begin_src matlab :tangle ./editImages.m
+  function [names] = getImagesName(pathFrom)
+  imagesName = dir(pathFrom);
+  names = {imagesName(3:end).name};
+  end
+#+end_src
+
+*** removeWhite 
+Here something that has been more difficult than previously thought.
+
+#+begin_src matlab :tangle ./editImages.m
+  function [img] = removeWhite(pathFrom, t, imageName)
+
+    imagePath = [pathFrom '/' imageName];
+    img = imread(imagePath);
+  
+    % Split image
+    imgA = img(1:250,1:end,:);
+    imgB = img(251:end,1:end,:);
+  
+    % Decrease target by difference between them and the mean
+    meanImg = mean(img,'all');
+    deltaImg = imgB(imgB(:,:,1) > t & imgB(:,:,2) > t & imgB(:,:,3) > t) - ...
+        meanImg;
+    imgB(imgB(:,:,1) > t & imgB(:,:,2) > t & imgB(:,:,3) > t) = imgB(imgB(:,:,1) ...
+                                                    > t & imgB(:,:,2) > t & ...
+                                                    imgB(:,:,3) > t) - ...
+        deltaImg;
+  
+    % Merge image
+    img = (cat(1,imgA,imgB));
+  
+    % Grayscale
+    img = squeeze(mean(img,3));
+  end
+#+end_src
+
+*** shineImages
+Here I will shine over all images in batches of 100
+
+#+begin_src matlab :tangle ./editImages.m
+  function [shined] = shineImages(images)
+    shined = cell(1,ceil(length(images)/100));
+    k = 1;
+
+    while true
+      if length(images) > 100
+        shined{k} = SHINE(images(1:100));
+        images(1:100) = [];
+        k = k+1;
+        disp(repmat('-',1,50))
+        disp(['Batch shining complete: ' num2str(k) '/' num2str(ceil(length(images)/100))])
+        disp(repmat('-',1,50))
+      else
+        shined{k} = SHINE(images);
+        break
+      end
+    end
+  end
+#+end_src
+
+*** writeImages
+The last step, writing back the images.
+In this last step, we are going also to apply the RISE procedure to the image.
+This will require another function
+
+#+begin_src matlab :tangle ./editImages.m
+  function [] = writeImages(pathTo, shined, imagesName,degradation)
+    k = 1;
+    for ishine=1:length(shined)
+      for iimg=1:length(shined{ishine})
+        img = shined{ishine}{iimg};
+        oldName = regexp(imagesName{k}, '/', 'split');
+        rootName = oldName{end};
+        newName = [pathTo '/' oldName{end}];
+        img = getImageSadr(img,degradation);
+        imwrite(img, newName);
+        disp(['Image write complete:' num2str(k) '/' num2str(length(imagesName))])
+        k = k+1;
+      end
+    end
+  end
+#+end_src
+
+*** getImageSadr
+
+Apply the RISE procedure to the image
+
+#+begin_src matlab :tangle ./editImages.m
+  function [img] = getImageSadr(img,degradation)
+      imgSize = size(img,1);
+      y = fft2(double(img));
+      ampl = abs(y);
+      theta = angle(y);
+      theta2 = theta;
+      for r = 1:imgSize
+          theta2(r, :) = theta(r, randperm(imgSize));
+      end
+      for c = 1:imgSize
+          theta2(:, c) = theta(randperm(imgSize), c);
+      end
+      zerocrossers = sign(theta2 - theta);
+      randomindices = round(rand(size(theta)));
+      addorsubtract2pi = (zerocrossers.*2*pi.*(-1)) .* randomindices ;
+      theta3 = theta2 + addorsubtract2pi;
+      indices_newphase = round(rand(size(theta))+0.5 - degradation);
+      theta4 = theta;
+      theta4(indices_newphase == 1) = theta3(indices_newphase == 1);
+      y2 = ampl.*exp(i*theta4);
+      degraded = ifft2(y2, 'symmetric');
+      mean(mean(degraded));
+      if mean(mean(degraded)) < 0
+          degraded = degraded - 2*mean(mean(degraded));
+      end
+      AvgDiff = 127 - mean(mean(degraded));
+      img = uint8(degraded + AvgDiff);
+  end
+#+end_src
+
+
+Afe
+
+** Create Sequences
+After having edited the images, we are going to create sequences.
+
+*** init
+#+BEGIN_SRC matlab :tangle createSequences.m
+  pathShinedImages = '~/Datasets/MasterThesis/Faces/Shined';
+  targetId = 'f12';
+  targetEmo = '06';
+
+  [ids, emos] = getDimensions(pathShinedImages,targetId,targetEmo);
+  emos = [{'01'},{'02'},{'03'},{'07'}];
+  writeSequence(pathSequences,targetId,targetEmo);
+#+END_SRC
+
+*** getDimensions
+First, we load all the ids and emotions.
+From them, we are going to exclude the targets, respectively subject12 and emotion06 (happiness).
+
+We are going to remove also some other emotions, like neutral ones.
+
+#+BEGIN_SRC 
+
+#+END_SRC
+*** writeSequence
+*** getMorph
+*** Create Sequence
+*** Write Sequence
+* Experiment
+
+
+
+
+
+
+
+
+* Data Analysis
+
+
+
+
+
+
+
+* Create Sequences
+** 1. Load and filter images
+Open images and apply =SHINE= and remove white
+
+*** DONE Apply Sadr here?
+    CLOSED: [2019-11-11 lun 13:00]
+Tested, not a viable options, same problem
+
+
+* Sadr
+
+Here I try to document Baldauf's code on the RISE sequence
+
+** TODO Test if mean vs rgb2gray
+
+Mean and rgb2gray give different results.
+It seems that with mean, there is no black shit around
+
+Get 
+
+** 2. Select Dimensions
+Each image has a possible identity and emotion. Filter and select them.
+Moreover, choose a target Identity and Emotion
+
+
+
+
+
+* Image processing
+First we need to load the images.
+These files are divided into identity and emotion, in such a way
+=f<ID>_<EMO>_039.bmp=
+
+039 stays for frontal
+
+
+
+** De-Whitening
+
+Here I insert the code that remove the whiteness from the image
+
+First, load an example image
+
+#+BEGIN_SRC matlab
+pathFrom = '~/Datasets/MasterThesis/Faces/Original';
+imgName = [pathFrom '/f3_01_039.bmp'];
+img = imread(imgName);
+#+END_SRC
+
+Then divide it in two parts: upper and lower
+
+#+BEGIN_SRC matlab
+  imgUp = img(1:220,1:end,:);
+  imgDown = img(221:end,1:end,:);
+#+END_SRC
+
+Just to be sure that it capture the lower half
+
+#+BEGIN_SRC matlab
+  imshow(imgDown);
+#+END_SRC
+
+We are going to decrease values for pixel greater than a threshold *t*.
+
+First we define a *threshold* value, empirically set to =145=.
+Then we select *only* the pixel that are greater that threshold in *all* three color channels, and decrease by *delta*
+
+This delta is the difference between the whole *mean* of the image by each value greater than the threshold.
+
+#+BEGIN_SRC matlab
+  t = 145;
+  imgDownWhite = imgDown(imgDown(:,:,1) & imgDown(:,:,2) & imgDown(:,:,3));
+  meanImgDown = mean(imgDown,'all');
+  deltaImgDown = imgDownWhite - meanImgDown;
+  imgDown(imgDown(:,:,1) & imgDown(:,:,2) & imgDown(:,:,3)) = imgDown(imgDown(:,:,1) & imgDown(:,:,2) & imgDown(:,:,3)) - deltaImgDown;
+#+END_SRC
+
+#+BEGIN_SRC matlab
+
+  t = 145;
+  img = imgDown;
+  meanImg = mean(img,'all');
+  deltaImg = img(img(:,:,1) > t & img(:,:,2) > t & img(:,:,3) > t) - meanImg;
+  img(img(:,:,1) > t & img(:,:,2) > t & img(:,:,3) > t) = img(img(:,:,1) > t ...
+                                                    & img(:,:,2) > t & img(:,:,3) ...
+                                                    > t) - deltaImg;
+  x = cat(1,imgUp,img);
+  imshow(x)
+#+END_SRC
+
+
+
+
+
+
+

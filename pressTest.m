@@ -1,15 +1,9 @@
-
-%% Load Variables
 clear
 clearvars
-pathSeqs = '~/.local/share/gdrive/MA_Gianluca/Data/sequences';
-numTrials = 100;
+pathSeqs ='~/Datasets/MasterThesis/Faces/Sequences';
 
-%% Create Matrix
 
-trials = createMatrix(pathSeqs, numTrials);
-
-%% Start Psychtoolbox
+notMeg = true;
 
 % Display trial
 
@@ -18,16 +12,31 @@ black = [0 0 0];
 gray = white / 2;
 screenNumber = max(Screen('Screens'));
 screenSize = get(screenNumber, 'ScreenSize');
-winX = screenSize(3);
-winY = screenSize(4);
+winX = screenSize(3)/2;
+winY = screenSize(4)/2;
 k = 1;
 crossSize = winX / 100;
 winCenter = [winX/2 winY/2];
 
 Screen('Preference', 'SkipSyncTests',2)
 win = Screen('OpenWindow', screenNumber, gray, [0 0 winX winY]);
+seq = cell(320,1);
 
-for i=1:length(trials)
+trials = cell(1,3);
+trials(1,1) = {'10'};
+trials(1,2) = {'21'};
+trials(1,3) = {[pathSeqs '/2-10_21-240']};
+i = 1
+
+	% Load image
+	for iimg=1:320
+        img = imread([trials{i,3} '/' num2str(iimg) '.png']);
+    if notMeg
+        img = img(11:end,:);
+    end
+		seq{iimg} = img;
+	end
+
 
 	Screen('DrawLines', win, [-crossSize crossSize 0 0; 0 0 -crossSize crossSize], 2, black, winCenter);
 	Screen('Flip',win);
@@ -39,11 +48,11 @@ for i=1:length(trials)
 
 	Screen('TextSize',win,40);
 	% Screen('DrawLines', win, [-crossSize crossSize 0 0; 0 0 -crossSize crossSize], 2, black, winCenter);
-	typeStim = ''
+	typeStim = '';
 	if strcmp(trials{i,1},'10')
-		typeStim = 'I'
+		typeStim = 'E';
 	elseif strcmp(trials{i,1},'11')
-		typeStim = 'E'
+		typeStim = 'I';
 	end
 
 	DrawFormattedText(win, typeStim,'center','center');
@@ -55,24 +64,32 @@ for i=1:length(trials)
 	WaitSecs(intervalType);
 
 	for iimg=1:320
-		img = imread([trials{i,3} '/' num2str(iimg) '.png']);
+		% img = imread([trials{i,3} '/' num2str(iimg) '.png']);
+		% TODO: Occlude watermarks if behavior
+		% TODO: Write in a new colum trials reaction time of press button. tic present - press button
+		% TODO: At the end of each block, average reaction time. NaN if there is no press
+		% TODO: If press without target -> fill 9999
 
-		imageTexture = Screen('MakeTexture', win, img);
+		imageTexture = Screen('MakeTexture', win, seq{iimg});
 		Screen('DrawTexture', win, imageTexture, [], [], 0);
 		Screen('DrawLines', win, [-crossSize crossSize 0 0; 0 0 -crossSize crossSize], 2, black, winCenter);
 		Screen('Flip',win);
+        
+        if iimg == 80
+            tic
+            
+            if KbCheck
+                rTime = toc;
+            end
+        end
 	end
 
 	Screen('DrawLines', win, [-crossSize crossSize 0 0; 0 0 -crossSize crossSize], 2, black, winCenter);
 	Screen('Flip',win);
 
 	intervalCross = .5;
-	intervalCross = intervalType + randi([0 100])/1000;
-
+	intervalCross = intervalCross + randi([0 100])/1000;
+ 
 	WaitSecs(intervalCross);
-end
-
-
 
 sca
-

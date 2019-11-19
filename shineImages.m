@@ -13,7 +13,7 @@ function [] = shineImages(pathFrom, pathTo, pathShine)
 
 	% Create destination path if not exists
 	% if ~exist(pathTo, 'folder')
-		mkdir(pathTo)
+		% mkdir(pathTo)
 	% end
 
 	% List all sub-folders
@@ -22,7 +22,7 @@ function [] = shineImages(pathFrom, pathTo, pathShine)
 
 	% Initialize images and names for
 	images = {};
-	t = 140;
+	% t = 140;
 	% t = 255/2;
 
 	% % Loop over ids
@@ -50,16 +50,48 @@ function [] = shineImages(pathFrom, pathTo, pathShine)
 
 imageNames = dir(pathFrom);
 names = {imageNames(3:end).name};
-whiteEmo = {'01', '02', '03', '06', '07'};
+% whiteEmo = {'01', '02', '03', '06', '07'};
+t = 145;
 
 for iimg=1:length(names)
 	imageName = [pathFrom '/' names{iimg}];
-	img = rgb2gray(imread(imageName));
-	a = regexp(names{iimg}, '_', 'split');
+  img = imread(imageName);
+  
+  imgA = img(1:250,1:end,:);
+  imgB = img(251:end,1:end,:);
+  meanImg = mean(img,'all');
+  
+  deltaImg = imgB(imgB(:,:,1) > t & imgB(:,:,2) > t & imgB(:,:,3) > t) - meanImg;
+  % deltaImg = img(img(:,:,1) > t & img(:,:,2) > t & img(:,:,3) > t) - meanImg;
+  size(deltaImg)
+  size(imgB)
+  
+  
+imgB(imgB(:,:,1) > t & imgB(:,:,2) > t & imgB(:,:,3) > t) = imgB(imgB(:,:,1) ...
+                                                  > t & imgB(:,:,2) > t & ...
+                                                  imgB(:,:,3) > t) - deltaImg;
+  
+  
+  img = (cat(1,imgA,imgB));
+  img = squeeze(mean(img,3));
+  
+  
+                
+
+	% img = rgb2gray(imread(imageName));
+	% a = regexp(names{iimg}, '_', 'split');
 	% if ismember(a{2}, whiteEmo)
 		% img(img > t) = mean(img(img > 29)) + (abs(img(img > t)) - t);
 		% tr = mean(img(img > t)) - mean(img(img > 29));
+		% rt = 255/2;
+		% rt = 180;
+		% rt = 170;
+		% img(img > rt) = img(img > rt) - 50;
 		% img(img > t) = img(img > t) - mean(img(img > 29));
+		% rt = 255/2;
+		% t = mean(img(img > rt)) - mean(img(img > 29));
+		% img(img > rt) = img(img > rt) - t;
+
 
 % 		img(img > t) = img(img > t) - tr;
 
@@ -126,6 +158,9 @@ end
 			newName = [pathTo '/' oldName{end}];
 
 			% Write image in new path
+            
+            % Apply sadr
+            % img = uint8(sadr(img,0.95));
 			imwrite(img, newName);
 			disp(['Image write complete:' num2str(k) '/' num2str(length(names))])
 			k = k+1;

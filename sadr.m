@@ -1,4 +1,5 @@
 function [img] = sadr(img, degradation)
+	% TODO: Check errors in these
 
     y = fft2(double(img));        % Compute DFT of x
 

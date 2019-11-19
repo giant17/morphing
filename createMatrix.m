@@ -1,5 +1,7 @@
 function [trials] = createMatrix(pathSeqs, numTrials)
 
+	% TODO: 4 ROW: Index
+
 	% Initialize
 	trials = cell(numTrials,3);
 
@@ -18,7 +20,8 @@ function [trials] = createMatrix(pathSeqs, numTrials)
 
 	% Row 3 - Path Sequence
 
-	trials(:,3) = {''};
+	trials(:,3) = {'EMPTY'};
+  trials(:,4) = {'NONE'};
 
 	for i=1:numTrials
 		x = dir([pathSeqs '/*-' trials{i,1} '_' trials{i,2} '*']);
@@ -32,7 +35,6 @@ function [trials] = createMatrix(pathSeqs, numTrials)
 
 
 		while true
-			% TODO: Change ismember
 			if ismember(chosenSeq, trials(:,3))
 				chosenSeq = seqs{randi(length(seqs))};
 			else
@@ -41,8 +43,15 @@ function [trials] = createMatrix(pathSeqs, numTrials)
 		end
 
 		trials(i,3) = {chosenSeq};
+    x = regexp(chosenSeq,'-','split');
+    if length(x) > 2
+        trials(i,4) = x(end);
+    end
 	end
+  
+  % Reaction time placeholder
+  trials(:,5) = {'999'};
 
 	% Shuffle trials
-	trials = Shuffle(trials);
+	% trials = Shuffle(trials);
 end

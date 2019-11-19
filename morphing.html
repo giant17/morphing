@@ -1,0 +1,590 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-11-12 mar 17:01 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Morphing experiment</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="gianluca" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Morphing experiment</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org9d015e6">1. Stimulus</a>
+<ul>
+<li><a href="#orgefb8166">1.1. Filter images</a>
+<ul>
+<li><a href="#orgdd4ce00">1.1.1. getImagesName</a></li>
+<li><a href="#org95eb4f4">1.1.2. removeWhite</a></li>
+<li><a href="#org121e41f">1.1.3. shineImages</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org8808099">2. Experiment</a></li>
+<li><a href="#org0a90995">3. Data Analysis</a></li>
+<li><a href="#org1c8e146">4. Create Sequences</a>
+<ul>
+<li><a href="#org23a91f9">4.1. 1. Load and filter images</a>
+<ul>
+<li><a href="#org4b16dd5">4.1.1. <span class="done DONE">DONE</span> Apply Sadr here?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgdc93620">5. Sadr</a>
+<ul>
+<li><a href="#org9a0bd64">5.1. <span class="todo TODO">TODO</span> Test if mean vs rgb2gray</a></li>
+<li><a href="#orge5eaf26">5.2. 2. Select Dimensions</a></li>
+</ul>
+</li>
+<li><a href="#org9c686e5">6. Image processing</a>
+<ul>
+<li><a href="#org4163710">6.1. De-Whitening</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+Here I will document every chunk of code of my project.
+</p>
+
+<p>
+First, major outline of the steps
+</p>
+
+<p>
+This project consist in a ssVEP, steady state visual evoked potential study with
+MEG, with faces as a main stimulus
+</p>
+
+<div id="outline-container-org9d015e6" class="outline-2">
+<h2 id="org9d015e6"><span class="section-number-2">1</span> Stimulus</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-orgefb8166" class="outline-3">
+<h3 id="orgefb8166"><span class="section-number-3">1.1</span> Filter images</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+The images are given by The software <b>FaceGen</b>: which takes a photograph
+of a person and apply linear transformations in order to apply different
+kind of emotions.
+</p>
+
+<p>
+Here is an example
+[<img src="resources/orig_pic.png" alt="orig_pic.png" />]
+</p>
+
+<p>
+However, first we need to equalize the images: we need to control for low level features,
+such as luminosity.
+This is given by the MATLAB toolbox <b>shine</b>.
+</p>
+
+
+<p>
+First, we declare all the function in the beginning of the file.
+This is useful to create a structure to the code.
+</p>
+
+<p>
+Here are the steps/functions:
+</p>
+<ul class="org-ul">
+<li><b>getImagesName</b>: load the names of the images in one folder</li>
+<li><b>removeWhite</b>: remove the pixel too white</li>
+<li><b>shineImages</b>: apply shined to all the image</li>
+<li><b>writeImages</b>: write the new images in another folder</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-nillangnilswitchesnilflags">nilbody
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgdd4ce00" class="outline-4">
+<h4 id="orgdd4ce00"><span class="section-number-4">1.1.1</span> getImagesName</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<p>
+The most easy one: return a list of cells with all filenames inside.
+remove the first 2, as in Unix systems are . and ..
+</p>
+<div class="org-src-container">
+<pre class="src src-matlab"><span style="color: #4f97d7; font-weight: bold;">function</span> <span style="color: #4f97d7;">[</span><span style="color: #7590db;">names</span><span style="color: #4f97d7;">]</span> = <span style="color: #bc6ec5; font-weight: bold;">getImagesName</span><span style="color: #4f97d7;">(</span><span style="color: #7590db;">pathFrom</span><span style="color: #4f97d7;">)</span>
+imageNames = dir<span style="color: #4f97d7;">(</span>pathFrom<span style="color: #4f97d7;">)</span>;
+names = <span style="color: #4f97d7;">{</span>imageNames<span style="color: #bc6ec5;">(</span><span style="color: #a45bad;">3</span><span style="color: #ce537a; font-weight: bold;">:</span>end<span style="color: #bc6ec5;">)</span>.name<span style="color: #4f97d7;">}</span>;
+<span style="color: #4f97d7; font-weight: bold;">end</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org95eb4f4" class="outline-4">
+<h4 id="org95eb4f4"><span class="section-number-4">1.1.2</span> removeWhite</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<p>
+Here something that has been more difficult than previously thought.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-matlab"><span style="color: #4f97d7; font-weight: bold;">function</span> <span style="color: #4f97d7;">[</span><span style="color: #7590db;">img</span><span style="color: #4f97d7;">]</span> = <span style="color: #bc6ec5; font-weight: bold;">removeWhite</span><span style="color: #4f97d7;">(</span><span style="color: #7590db;">pathFrom</span>, <span style="color: #7590db;">t</span>, <span style="color: #7590db;">imageName</span><span style="color: #4f97d7;">)</span>
+
+  imagePath = <span style="color: #4f97d7;">[</span>pathFrom <span style="color: #2d9574;">'/'</span> imageName<span style="color: #4f97d7;">]</span>;
+  img = imread<span style="color: #4f97d7;">(</span>imagePath<span style="color: #4f97d7;">)</span>;
+
+  <span style="color: #2aa1ae; background-color: #292e34;">% Split image</span>
+  imgA = img<span style="color: #4f97d7;">(</span><span style="color: #a45bad;">1</span><span style="color: #ce537a; font-weight: bold;">:</span><span style="color: #a45bad;">250</span>,<span style="color: #a45bad;">1</span><span style="color: #ce537a; font-weight: bold;">:</span>end,<span style="color: #ce537a; font-weight: bold;">:</span><span style="color: #4f97d7;">)</span>;
+  imgB = img<span style="color: #4f97d7;">(</span><span style="color: #a45bad;">251</span><span style="color: #ce537a; font-weight: bold;">:</span>end,<span style="color: #a45bad;">1</span><span style="color: #ce537a; font-weight: bold;">:</span>end,<span style="color: #ce537a; font-weight: bold;">:</span><span style="color: #4f97d7;">)</span>;
+
+  <span style="color: #2aa1ae; background-color: #292e34;">% Decrease target by difference between them and the mean</span>
+  meanImg = mean<span style="color: #4f97d7;">(</span>img,<span style="color: #2d9574;">'all'</span><span style="color: #4f97d7;">)</span>;
+  deltaImg = imgB<span style="color: #4f97d7;">(</span>imgB<span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #a45bad;">1</span><span style="color: #bc6ec5;">)</span> <span style="color: #ce537a; font-weight: bold;">&gt;</span> t <span style="color: #ce537a; font-weight: bold;">&amp;</span> imgB<span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #a45bad;">2</span><span style="color: #bc6ec5;">)</span> <span style="color: #ce537a; font-weight: bold;">&gt;</span> t <span style="color: #ce537a; font-weight: bold;">&amp;</span> imgB<span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #a45bad;">3</span><span style="color: #bc6ec5;">)</span> <span style="color: #ce537a; font-weight: bold;">&gt;</span> t<span style="color: #4f97d7;">)</span> <span style="color: #ce537a; font-weight: bold;">-</span> ...
+      meanImg;
+  imgB<span style="color: #4f97d7;">(</span>imgB<span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #a45bad;">1</span><span style="color: #bc6ec5;">)</span> <span style="color: #ce537a; font-weight: bold;">&gt;</span> t <span style="color: #ce537a; font-weight: bold;">&amp;</span> imgB<span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #a45bad;">2</span><span style="color: #bc6ec5;">)</span> <span style="color: #ce537a; font-weight: bold;">&gt;</span> t <span style="color: #ce537a; font-weight: bold;">&amp;</span> imgB<span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #a45bad;">3</span><span style="color: #bc6ec5;">)</span> <span style="color: #ce537a; font-weight: bold;">&gt;</span> t<span style="color: #4f97d7;">)</span> = imgB<span style="color: #4f97d7;">(</span>imgB<span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #a45bad;">1</span><span style="color: #bc6ec5;">)</span> ...
+                                                  <span style="color: #ce537a; font-weight: bold;">&gt;</span> t <span style="color: #ce537a; font-weight: bold;">&amp;</span> imgB<span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #a45bad;">2</span><span style="color: #bc6ec5;">)</span> <span style="color: #ce537a; font-weight: bold;">&gt;</span> t <span style="color: #ce537a; font-weight: bold;">&amp;</span> ...
+                                                  imgB<span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #a45bad;">3</span><span style="color: #bc6ec5;">)</span> <span style="color: #ce537a; font-weight: bold;">&gt;</span> t<span style="color: #4f97d7;">)</span> <span style="color: #ce537a; font-weight: bold;">-</span> ...
+      deltaImg;
+
+  <span style="color: #2aa1ae; background-color: #292e34;">% Merge image</span>
+  img = <span style="color: #4f97d7;">(</span>cat<span style="color: #bc6ec5;">(</span><span style="color: #a45bad;">1</span>,imgA,imgB<span style="color: #bc6ec5;">)</span><span style="color: #4f97d7;">)</span>;
+
+  <span style="color: #2aa1ae; background-color: #292e34;">% Grayscale</span>
+  img = squeeze<span style="color: #4f97d7;">(</span>mean<span style="color: #bc6ec5;">(</span>img,<span style="color: #a45bad;">3</span><span style="color: #bc6ec5;">)</span><span style="color: #4f97d7;">)</span>;
+<span style="color: #4f97d7; font-weight: bold;">end</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org121e41f" class="outline-4">
+<h4 id="org121e41f"><span class="section-number-4">1.1.3</span> shineImages</h4>
+<div class="outline-text-4" id="text-1-1-3">
+<p>
+Here I will shine over all images
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8808099" class="outline-2">
+<h2 id="org8808099"><span class="section-number-2">2</span> Experiment</h2>
+</div>
+
+
+
+
+
+
+
+
+<div id="outline-container-org0a90995" class="outline-2">
+<h2 id="org0a90995"><span class="section-number-2">3</span> Data Analysis</h2>
+</div>
+
+
+
+
+
+
+
+<div id="outline-container-org1c8e146" class="outline-2">
+<h2 id="org1c8e146"><span class="section-number-2">4</span> Create Sequences</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+<div id="outline-container-org23a91f9" class="outline-3">
+<h3 id="org23a91f9"><span class="section-number-3">4.1</span> 1. Load and filter images</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+Open images and apply <code>SHINE</code> and remove white
+</p>
+</div>
+
+<div id="outline-container-org4b16dd5" class="outline-4">
+<h4 id="org4b16dd5"><span class="section-number-4">4.1.1</span> <span class="done DONE">DONE</span> Apply Sadr here?</h4>
+<div class="outline-text-4" id="text-4-1-1">
+<p>
+Tested, not a viable options, same problem
+</p>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgdc93620" class="outline-2">
+<h2 id="orgdc93620"><span class="section-number-2">5</span> Sadr</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+Here I try to document Baldauf's code on the RISE sequence
+</p>
+</div>
+
+<div id="outline-container-org9a0bd64" class="outline-3">
+<h3 id="org9a0bd64"><span class="section-number-3">5.1</span> <span class="todo TODO">TODO</span> Test if mean vs rgb2gray</h3>
+<div class="outline-text-3" id="text-5-1">
+<p>
+Mean and rgb2gray give different results.
+It seems that with mean, there is no black shit around
+</p>
+
+<p>
+Get 
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge5eaf26" class="outline-3">
+<h3 id="orge5eaf26"><span class="section-number-3">5.2</span> 2. Select Dimensions</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+Each image has a possible identity and emotion. Filter and select them.
+Moreover, choose a target Identity and Emotion
+</p>
+</div>
+</div>
+</div>
+
+
+
+
+
+<div id="outline-container-org9c686e5" class="outline-2">
+<h2 id="org9c686e5"><span class="section-number-2">6</span> Image processing</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+First we need to load the images.
+These files are divided into identity and emotion, in such a way
+<code>f&lt;ID&gt;_&lt;EMO&gt;_039.bmp</code>
+</p>
+
+<p>
+039 stays for frontal
+</p>
+</div>
+
+
+
+<div id="outline-container-org4163710" class="outline-3">
+<h3 id="org4163710"><span class="section-number-3">6.1</span> De-Whitening</h3>
+<div class="outline-text-3" id="text-6-1">
+<p>
+Here I insert the code that remove the whiteness from the image
+</p>
+
+<p>
+First, load an example image
+</p>
+
+<div class="org-src-container">
+<pre class="src src-matlab">pathFrom = <span style="color: #2d9574;">'~/Datasets/MasterThesis/Faces/Original'</span>;
+imgName = <span style="color: #4f97d7;">[</span>pathFrom <span style="color: #2d9574;">'/f3_01_039.bmp'</span><span style="color: #4f97d7;">]</span>;
+img = imread<span style="color: #4f97d7;">(</span>imgName<span style="color: #4f97d7;">)</span>;
+</pre>
+</div>
+
+<p>
+Then divide it in two parts: upper and lower
+</p>
+
+<div class="org-src-container">
+<pre class="src src-matlab">imgUp = img<span style="color: #4f97d7;">(</span><span style="color: #a45bad;">1</span><span style="color: #ce537a; font-weight: bold;">:</span><span style="color: #a45bad;">220</span>,<span style="color: #a45bad;">1</span><span style="color: #ce537a; font-weight: bold;">:</span>end,<span style="color: #ce537a; font-weight: bold;">:</span><span style="color: #4f97d7;">)</span>;
+imgDown = img<span style="color: #4f97d7;">(</span><span style="color: #a45bad;">221</span><span style="color: #ce537a; font-weight: bold;">:</span>end,<span style="color: #a45bad;">1</span><span style="color: #ce537a; font-weight: bold;">:</span>end,<span style="color: #ce537a; font-weight: bold;">:</span><span style="color: #4f97d7;">)</span>;
+</pre>
+</div>
+
+<p>
+Just to be sure that it capture the lower half
+</p>
+
+<div class="org-src-container">
+<pre class="src src-matlab">imshow<span style="color: #4f97d7;">(</span>imgDown<span style="color: #4f97d7;">)</span>;
+</pre>
+</div>
+
+<p>
+We are going to decrease values for pixel greater than a threshold <b>t</b>.
+</p>
+
+<p>
+First we define a <b>threshold</b> value, empirically set to <code>145</code>.
+Then we select <b>only</b> the pixel that are greater that threshold in <b>all</b> three color channels, and decrease by <b>delta</b>
+</p>
+
+<p>
+This delta is the difference between the whole <b>mean</b> of the image by each value greater than the threshold.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-matlab">t = <span style="color: #a45bad;">145</span>;
+imgDownWhite = imgDown<span style="color: #4f97d7;">(</span>imgDown<span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #a45bad;">1</span><span style="color: #bc6ec5;">)</span> <span style="color: #ce537a; font-weight: bold;">&amp;</span> imgDown<span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #a45bad;">2</span><span style="color: #bc6ec5;">)</span> <span style="color: #ce537a; font-weight: bold;">&amp;</span> imgDown<span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #a45bad;">3</span><span style="color: #bc6ec5;">)</span><span style="color: #4f97d7;">)</span>;
+meanImgDown = mean<span style="color: #4f97d7;">(</span>imgDown,<span style="color: #2d9574;">'all'</span><span style="color: #4f97d7;">)</span>;
+deltaImgDown = imgDownWhite <span style="color: #ce537a; font-weight: bold;">-</span> meanImgDown;
+imgDown<span style="color: #4f97d7;">(</span>imgDown<span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #a45bad;">1</span><span style="color: #bc6ec5;">)</span> <span style="color: #ce537a; font-weight: bold;">&amp;</span> imgDown<span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #a45bad;">2</span><span style="color: #bc6ec5;">)</span> <span style="color: #ce537a; font-weight: bold;">&amp;</span> imgDown<span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #a45bad;">3</span><span style="color: #bc6ec5;">)</span><span style="color: #4f97d7;">)</span> = imgDown<span style="color: #4f97d7;">(</span>imgDown<span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #a45bad;">1</span><span style="color: #bc6ec5;">)</span> <span style="color: #ce537a; font-weight: bold;">&amp;</span> imgDown<span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #a45bad;">2</span><span style="color: #bc6ec5;">)</span> <span style="color: #ce537a; font-weight: bold;">&amp;</span> imgDown<span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #a45bad;">3</span><span style="color: #bc6ec5;">)</span><span style="color: #4f97d7;">)</span> <span style="color: #ce537a; font-weight: bold;">-</span> deltaImgDown;
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-matlab">
+t = <span style="color: #a45bad;">145</span>;
+img = imgDown;
+meanImg = mean<span style="color: #4f97d7;">(</span>img,<span style="color: #2d9574;">'all'</span><span style="color: #4f97d7;">)</span>;
+deltaImg = img<span style="color: #4f97d7;">(</span>img<span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #a45bad;">1</span><span style="color: #bc6ec5;">)</span> <span style="color: #ce537a; font-weight: bold;">&gt;</span> t <span style="color: #ce537a; font-weight: bold;">&amp;</span> img<span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #a45bad;">2</span><span style="color: #bc6ec5;">)</span> <span style="color: #ce537a; font-weight: bold;">&gt;</span> t <span style="color: #ce537a; font-weight: bold;">&amp;</span> img<span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #a45bad;">3</span><span style="color: #bc6ec5;">)</span> <span style="color: #ce537a; font-weight: bold;">&gt;</span> t<span style="color: #4f97d7;">)</span> <span style="color: #ce537a; font-weight: bold;">-</span> meanImg;
+img<span style="color: #4f97d7;">(</span>img<span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #a45bad;">1</span><span style="color: #bc6ec5;">)</span> <span style="color: #ce537a; font-weight: bold;">&gt;</span> t <span style="color: #ce537a; font-weight: bold;">&amp;</span> img<span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #a45bad;">2</span><span style="color: #bc6ec5;">)</span> <span style="color: #ce537a; font-weight: bold;">&gt;</span> t <span style="color: #ce537a; font-weight: bold;">&amp;</span> img<span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #a45bad;">3</span><span style="color: #bc6ec5;">)</span> <span style="color: #ce537a; font-weight: bold;">&gt;</span> t<span style="color: #4f97d7;">)</span> = img<span style="color: #4f97d7;">(</span>img<span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #a45bad;">1</span><span style="color: #bc6ec5;">)</span> <span style="color: #ce537a; font-weight: bold;">&gt;</span> t ...
+                                                  <span style="color: #ce537a; font-weight: bold;">&amp;</span> img<span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #a45bad;">2</span><span style="color: #bc6ec5;">)</span> <span style="color: #ce537a; font-weight: bold;">&gt;</span> t <span style="color: #ce537a; font-weight: bold;">&amp;</span> img<span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #ce537a; font-weight: bold;">:</span>,<span style="color: #a45bad;">3</span><span style="color: #bc6ec5;">)</span> ...
+                                                  <span style="color: #ce537a; font-weight: bold;">&gt;</span> t<span style="color: #4f97d7;">)</span> <span style="color: #ce537a; font-weight: bold;">-</span> deltaImg;
+x = cat<span style="color: #4f97d7;">(</span><span style="color: #a45bad;">1</span>,imgUp,img<span style="color: #4f97d7;">)</span>;
+imshow<span style="color: #4f97d7;">(</span>x<span style="color: #4f97d7;">)</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: gianluca</p>
+<p class="date">Created: 2019-11-12 mar 17:01</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
